@@ -146,11 +146,6 @@ class BookingPage:
             widget.destroy()
         SplashScreen(root)
 
-     
-
-    # def BillingPage(self):
-    #     self.newWindow = Toplevel(self.root)
-    #     self.app = BillingPage(self.newWindow) 
 
 class BillingPage:
     global root
@@ -397,5 +392,5 @@ class Cab:
         # billing = Button(Frame_login,text="BILLING",bg="white",fg="black",bd=0,font=("Goudy old style",28)).place(x=560,y=310)
         nextButton = Button(Frame_cabBooking, text="NEXT", bg="grey", fg="white", bd=0,font=("Goudy old style", 20)).place(x=670, y=435,width=80, height=40)
 
-Cab(root)
+Login(root)
 root.mainloop()
