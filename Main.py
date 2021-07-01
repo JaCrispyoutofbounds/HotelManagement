@@ -272,14 +272,14 @@ class Login:
         desc=Label(root,text="Fill username and password here",font=("Goudy old style",15,"bold"),fg="gray",bg="white").place(x=90,y=100)
         #====Username module====
         lbl_username=Label(root,text="Username",font=("Impact",15),fg="gray",bg="white").place(x=90,y=140)
-        self.txt_user=Entry(root,font=("times new roman",15),bg="lightgray")
+        self.txt_user=Entry(root,font=("Product Sans",15),bg="lightgray")
         self.txt_user.place(x=90,y=170, width=350, height=35)
         #====Password module====
         lbl_password=Label(root,text="Password",font=("Impact",15),fg="gray",bg="white").place(x=90,y=210)
-        self.txt_pass=Entry(root,show="*",font=("times new roman",15),bg="lightgray")
+        self.txt_pass=Entry(root,show="*",font=("Product Sans",15),bg="lightgray")
         self.txt_pass.place(x=90,y=240, width=350, height=35)
         #====Button====
-        # forget_btn=Button(root,text="Forgot password?",bg="white",fg="gray",bd=0,font=("times new roman",12)).place(x=90,y=280)
+        # forget_btn=Button(root,text="Forgot password?",bg="white",fg="gray",bd=0,font=("Product Sans",12)).place(x=90,y=280)
         self.loginimage=PhotoImage(file="HotelManagement\Login.png")
         self.login_btn=Button(root,command=self.login_function,image=self.loginimage,bg="white",borderwidth=0)
         self.login_btn.place(relx=0.5,y=320,anchor=CENTER)
@@ -357,40 +357,31 @@ class Cab:
         root.title("Cab Booking")
         
         #frames code
-        Frame_cabBooking=Frame(self.root,bg="White")
-        Frame_cabBooking.place(x=190,y=50,height=500,width=800)
+        self.Frame_cab=Frame(root,bg="white")
+        self.Frame_cab.place(relx=0.5,rely=0.5,relheight=1,relwidth=0.5,anchor=CENTER)
+        self.cab=StringVar()
+        self.cab.set("Micro")
+        self.title=Label(self.Frame_cab,text="Cab Booking",font=("Impact",35,"bold"),fg="gray",bg="white").place(relx=0.5,rely=0.1,anchor=CENTER)
+        self.l_cab = Label(self.Frame_cab, text="Cab Type", font=("Product Sans", 15, "bold"), fg="black",bg="white").place(relx=0.2, rely=0.2)
+        self.type_list = ['Micro', 'Mini', 'Sedan']
+        self.droplist_cab = OptionMenu(self.Frame_cab, self.cab, *self.type_list).place(relx=0.6, rely=0.2, width=180)
+        self.pick=StringVar()
+        self.pick.set("Pick-Up")
+        self.l_type = Label(self.Frame_cab, text="Pickup/drop off", font=("Product Sans", 15, "bold"), fg="black",bg="white").place(relx=0.2, rely=0.35)
+        self.type_list = ['Pick up', 'Drop']
+        self.droplist_type = OptionMenu(self.Frame_cab,self.pick, *self.type_list).place(relx=0.6, rely=0.35, width=180)
+        self.loc=StringVar()
+        self.loc.set("Airport")
+        self.l_location = Label(self.Frame_cab, text="Location", font=("Product Sans", 15, "bold"), fg="black",bg="white").place(relx=0.2, rely=0.5)
+        self.type_list = ['Airpot', 'Bus-stop','Railway station']
+        self.droplist_type = OptionMenu(self.Frame_cab,self.loc, *self.type_list).place(relx=0.6, rely=0.5, width=180)
+        self.login_btn=Button(self.Frame_cab,text="Confirm booking",bg="white",fg="Black",font=("Product Sans",15)).place(relx=0.5,rely=0.9,anchor=CENTER)
+        self.l_room = Label(self.Frame_cab, text="Room Number", font=("Product Sans", 15, "bold"), fg="black",bg="white").place(relx=0.2, rely=0.65)
+        self.txt_pass=Entry(self.Frame_cab,font=("Product Sans",15),bg="lightgray")
+        self.txt_pass.place(relx=0.6,rely=0.65, width=180)
 
-        #Labels
-        title=Label(Frame_cabBooking,text="CAB BOOKING",font=("Product Sans",45,"bold"),fg="Black",bg="White").place(relx=0.5,rely=0.1,anchor=CENTER)
-        label_pickUp = Label(Frame_cabBooking, text="Pick-Up/Drop-Off",font=("Product Sans",20,"bold"),fg="Black",bg="White").place(x=150,rely=0.2)
-        self.Type=StringVar()
-        self.Type.set("Drop-Off")
-        self.TypeSelect=OptionMenu(Frame_cabBooking,self.Type,*["Drop-Off","Pick-Up"])
-        self.TypeSelect.configure(bg="White",highlightthickness=0,highlightbackground="Grey",borderwidth=0)
-        self.TypeSelect.place(relx=0.75, rely=0.2)
-        self.CabType=StringVar()
-        self.CabType.set("Micro")
-        self.CabSelect=OptionMenu(root,self.CabType,*["Micro","Mini","Senan"])
-        self.CabSelect.configure(bg="White",highlightthickness=0,highlightbackground="Grey",borderwidth=0)
-        self.CabSelect.place(x=800,y=250)
-        self.Loc=StringVar()
-        self.locationlabel=Label(Frame_cabBooking,text="CAB TYPE",font=("Product Sans",20,"bold"),fg="Black",bg="White").place(x=150,rely=0.35)
-        self.Location=OptionMenu(root,self.Loc,*["Airport","Bus-Stop","Railway Station"])
-        self.Location.configure(bg="White",highlightthickness=0,highlightbackground="Grey",borderwidth=0)
-        self.Location.place(x=800,y=250)
-        self.Room=Entry(root,font=("Product Sans",12),background="Light gray",fg="Black")
-        self.Room.place(relx=0.7,rely=0.15,anchor=CENTER)
-        label_roomno = Label(Frame_cabBooking,text="Room No",font=("Product Sans",20,"bold"),fg="Black",bg="White").place(x=150,rely=0.5)
-        label_location = Label(Frame_cabBooking,text="Location",font=("Product Sans",20,"bold"),fg="Black",bg="White").place(x=150,rely=0.65)
+    def CabBook(self):
+        pass
 
-        # label_billing = Label(Frame_login,text="BILLING",font=("Goudy old style",20,"bold"),fg="black",bg="white").place(x=550,y=350)
-
-        #BUTTONS CODE
-        # roomAvail=Button(Frame_login,text="ROOM AVAILABILITY",bg="white",fg="black",bd=0,font=("Goudy old style",28)).place(x=30,y=140)
-        # checkOut = Button(Frame_login,text="CHECK-OUT",bg="white",fg="black",bd=0,font=("Goudy old style",28)).place(x=530,y=140)
-        # cabBook = Button(Frame_login,text="CAB BOOK",bg="white",fg="black",bd=0,font=("Goudy old style",28)).place(x=100,y=310)
-        # billing = Button(Frame_login,text="BILLING",bg="white",fg="black",bd=0,font=("Goudy old style",28)).place(x=560,y=310)
-        nextButton = Button(Frame_cabBooking, text="NEXT", bg="grey", fg="white", bd=0,font=("Goudy old style", 20)).place(x=670, y=435,width=80, height=40)
-
-Login(root)
+Cab(root)
 root.mainloop()
