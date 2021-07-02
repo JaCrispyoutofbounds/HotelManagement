@@ -32,7 +32,7 @@ class BookingPage:
         # Getting the number of occupants
         self.Occupants=StringVar()
         OccupantLabel=Label(root,text="Select Number of Occupants",bg="White",font=("Product Sans",12)).place(relx=0.3,rely=0.4)
-        self.OccupantSelect=OptionMenu(root,self.Occupants,*["1","2","3"],command=self.NumOfOcc())
+        self.OccupantSelect=OptionMenu(root,self.Occupants,*["1","2","3"])
         self.OccupantSelect.config(indicatoron=0)
         self.OccupantSelect.configure(bg="White",highlightthickness=0,highlightbackground="White",borderwidth=0)
         self.OccupantSelect.place(relx=0.6,rely=0.4,)
@@ -71,6 +71,9 @@ class BookingPage:
         self.bookbutton.place(relx=0.5,rely=0.95,anchor=CENTER)
         self.Days=Label(root,text="No of days",font=("Product Sans",12),bg="White").place(relx=0.3,rely=0.6)
         self.Day=IntVar()
+        self.aadhar=Label(root,text="Enter Aadhar Number",font=("Product Sans",12),bg="White").place(relx=0.3,rely=0.7)
+        self.EnterAadhar=Entry(root,font=("Product Sans",12),fg="Black",bg="light gray")
+        self.EnterAadhar.place(relx=0.6,rely=0.7)
         self.DaysSelect=OptionMenu(root,self.Day,*[1,2,3,4],command=self.showinfo)
         self.DaysSelect.config(indicatoron=0)
         self.DaysSelect.configure(bg="White",highlightthickness=0,highlightbackground="Grey",borderwidth=0)
@@ -94,36 +97,37 @@ class BookingPage:
         self.subtotal.config(text=self.TXT)
     
     def Book(self):  #Book Button Command
-        c.execute("Select Rno from Available where Category=? and Avail=? ORDER by Rno LIMIT 1",(self.Category.get(),"A"))
-        conn.commit()
-        self.roomnumber=c.fetchone()
-        self.room=self.roomnumber[0]
-        self.room=str(self.room)
-        self.date=date.today()
-        self.date=str(self.date)
-        if self.roomnumber!=[]:
-            if (self.EnterName.get()=="" or self.EnterNumber.get()=="" or self.EnterAddress.get()==""):
-                messagebox.showerror("Error","Fill all the required Fields", parent=self.root)
+        if (self.EnterNumber.get().isnumeric() or len(self.EnterNumber.get())==10 or len(self.EnterAadhar.get()==12)):
+            c.execute("Select Rno from Available where Category=? and Avail=? ORDER by Rno LIMIT 1",(self.Category.get(),"A"))
+            conn.commit()
+            self.roomnumber=c.fetchone()
+            self.room=self.roomnumber[0]
+            self.room=str(self.room)
+            self.date=date.today()
+            self.date=str(self.date)
+            if self.roomnumber!=[]:
+                if (self.EnterName.get()=="" or self.EnterNumber.get()=="" or self.EnterAddress.get()==""):
+                    messagebox.showerror("Error","Fill all the required Fields", parent=self.root)
+                else:
+                    try:
+                        self.showinfo(self.Category)
+                        c.execute("INSERT INTO Details (Name,Number,Address,Occupants,Category,Days,Subtotal,fare,CheckIn,Aadhar) VALUES(?,?,?,?,?,?,?,?,?,?)",(self.EnterName.get(),self.EnterNumber.get(),self.EnterAddress.get(),self.Occupants.get(),self.Category.get(),self.Day.get(),self.totalPrice,"0",self.date,self.EnterAadhar.get()))
+                        conn.commit()
+                        c.execute("UPDATE Available SET Avail=? WHERE Rno=?",("N",self.room))
+                        conn.commit()
+                        c.execute("Update Details SET Rno=? where Number=?",(self.room,self.EnterNumber.get()) )
+                        conn.commit()
+                        self.roomnumberinfo="Your Room Number is: "+self.room
+                        messagebox.showinfo("Booking Successful",self.roomnumberinfo,parent=self.root)
+                    except:
+                        messagebox.showerror("Error","Some Error Occured", parent=self.root)
             else:
-                try:
-                    self.showinfo(self.Category)
-                    c.execute("INSERT INTO Details (Name,Number,Address,Occupants,Category,Days,Subtotal,fare,CheckIn) VALUES(?,?,?,?,?,?,?,?,?)",(self.EnterName.get(),self.EnterNumber.get(),self.EnterAddress.get(),self.Occupants.get(),self.Category.get(),self.Day.get(),self.totalPrice,"0",self.date))
-                    conn.commit()
-                    c.execute("UPDATE Available SET Avail=? WHERE Rno=?",("N",self.room))
-                    conn.commit()
-                    c.execute("Update Details SET Rno=? where Number=?",(self.room,self.EnterNumber.get()) )
-                    conn.commit()
-                    self.roomnumberinfo="Your Room Number is: "+self.room
-                    messagebox.showinfo("Booking Successful",self.roomnumberinfo,parent=self.root)
-                except:
-                    messagebox.showerror("Error","Some Error Occured", parent=self.root)
+                print(self.roomnumber)
+                messagebox.showerror("Error","Room Not Available", parent=self.root)
         else:
-            print(self.roomnumber)
-            messagebox.showerror("Error","Room Not Available", parent=self.root)
-    
-    def NumOfOcc(self):
-        NumberOfOccupants=self.Occupants.get()
-        return NumberOfOccupants
+            messagebox.showerror("Error","Invalid Details")
+
+        
     
     def RoomCategoryFun(self,Category):
         
