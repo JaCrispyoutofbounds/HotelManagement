@@ -1,7 +1,6 @@
 from sqlite3.dbapi2 import ProgrammingError
 from tkinter import*
 from tkinter import messagebox
-from PIL import ImageTk
 import sqlite3 as lite
 from datetime import date
 root=Tk()
